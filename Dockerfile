@@ -28,10 +28,6 @@ COPY ./assets/docker-entrypoint.sh /usr/local/bin
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-# Set the new script as the entrypoint
-ENTRYPOINT ["entrypoint.sh"]
-CMD ["apache2-foreground"]
-
 RUN apt-get update \
     && apt-get install -y libfreetype-dev libjpeg62-turbo-dev libpng-dev unzip wget nano sendmail \
 	&& curl -sSL https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions -o - | sh -s \
@@ -45,5 +41,7 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
     && chown -R www-data:www-data .
-
-ENTRYPOINT ["docker-entrypoint.sh"]
+    
+# Set the new script as the entrypoint
+ENTRYPOINT ["entrypoint.sh"]
+CMD ["apache2-foreground"]
